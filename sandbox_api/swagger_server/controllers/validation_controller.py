@@ -4,8 +4,13 @@ import json
 import uuid
 from flask import jsonify, request, make_response
 from threading import Lock
-from __main__ import file_status, verification_queue
+from __main__ import verification_queue
+from pymongo import MongoClient
+from datetime import datetime
+# from queue import Queue
 
+# 創建一個隊列來儲存 待驗證的 JSON 表單和對應的新id
+# verification_queue = Queue()
 
 # 用於生成6位數UUID的計數器和鎖
 counter = 0
@@ -21,15 +26,19 @@ def generate_short_uuid():
         counter_part = str(counter).zfill(6)
         return uuid_part + counter_part
 
+# 輸出Queue的內容
 def print_queue_contents(queue):
     temp_list = []
+    id_list = []
     while not queue.empty():
         item = queue.get()
         temp_list.append(item)
     
     print("Queue contents:")
     for item in temp_list:
-        print(item)
+        # print(item)
+        id_list.append(item[1])  # 只提取bundle_id
+    print(str(id_list))
     
     for item in temp_list:
         queue.put(item)
@@ -37,15 +46,41 @@ def print_queue_contents(queue):
 def create_validations(body):
     body = request.get_json()
     bundles = body.get('bundles', [])
+    request_id = generate_short_uuid()
+    # 取得當前時間
+    create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # 連接到 MongoDB
+    client = MongoClient('mongodb://192.168.43.135:27017/')
+    db = client['TWCoreIGValidation']
+    collection = db['requests']
+    
+    # 準備要插入的資料
+    records = []
+    bundle_ids = []
     for bundle in bundles:
         original_id = bundle.get('id', '')
-        new_id = generate_short_uuid() + original_id
-        bundle['id'] = new_id
+        generate_id = generate_short_uuid()
+        bundle_id = generate_id + original_id
+        bundle['id'] = bundle_id
         # 將表單加入到待驗證隊列中
-        verification_queue.put((json.dumps(bundle), new_id))
-        print_queue_contents(verification_queue)
-        # print(f"昆霖測試 bundle: {bundle}")
+        verification_queue.put((json.dumps(bundle), bundle_id, request_id))
+        # print("昆霖測試bundle_id = " + str(bundle_id))
+        # print_queue_contents(verification_queue)
+        bundle_ids.append(generate_id)
+        
+    records.append({
+        'request_id': request_id,
+        'bundle_ids': bundle_ids,
+        'create_time': create_time,
+    })
 
+    # request_id 對應到多個bundle_id，寫到mongoDB裡
+    # 將資料插入到 requests 集合中
+    collection.insert_many(records)
+    
+    client.close()
+    
     response = {
         "message": "Validations created successfully",
         "modified_bundles": bundles
