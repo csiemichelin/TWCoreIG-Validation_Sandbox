@@ -16,10 +16,12 @@ from queue import Queue
 verification_queue = Queue()
 
 # 全局變量，保存每個input文件的狀態（是否空閒）1~10 => range(1, 11)
-file_status = {f'input/bundle-{i:02}.json': 'idle' for i in range(1, 4)}
+# file_status = {f'input/bundle-{i:02}.json': 'idle' for i in range(1, 4)}
+file_status = {f'input/bundle-{i:02}.json': 'idle' for i in range(1, 11)}
 
 # 全局變量，保存每個input文件的狀態的cli_message，初始值為空
-climessage_list = {f'input/bundle-{i:02}.json': '' for i in range(1, 4)}
+# climessage_list = {f'input/bundle-{i:02}.json': '' for i in range(1, 4)}
+climessage_list = {f'input/bundle-{i:02}.json': '' for i in range(1, 11)}
 
 # 創建一個Quee紀錄每個輸入的cli_message(每次monitor執行時固定撈idle狀態的cli_message，當busy檢查該檔案是否跟此list的值不同)
 context = ssl.SSLContext()
@@ -147,36 +149,36 @@ def finished_validation(file_path):
             print(f"'{outputcli_file}' cli_message does not exist")
             return False
 
-#  檢查output-[XX].json是否存在且格式正確，若存在檢查是否驗證完畢，再複製output-[XX].json到[bundle_id].json，複製完畢才將狀態調整為idle
-def check_bundle_id_json_existed(file_path, output_file_path, id):
+#  檢查outputcli-[XX].json是否存在且格式正確，若存在檢查是否驗證完畢，再複製outputcli-[XX].json到[bundle_id].json，複製完畢才將狀態調整為idle
+def check_bundle_id_json_existed(file_path, outputcli_file, id):
     bundle_id_json = f"output_bundleID/{id}.json"
-    # 若存在output-[XX].json
-    if os.path.exists(output_file_path) and is_valid_json_file(output_file_path):
-        # 讀取 output-[XX].json 的内容
-        with open(output_file_path, 'r', encoding='utf-8') as f:
-            output_data = json.load(f)
-        
-        # 將内容追加到 [bundle_id].json
-        with open(bundle_id_json, 'r+', encoding='utf-8') as f:
-            try:
-                existing_data = json.load(f)
-            except json.JSONDecodeError:
-                existing_data = {"bundle_id": []}
+    # 若存在outputcli-[XX].json
+    if os.path.exists(outputcli_file):
+        with open(outputcli_file, 'r') as f:
+            # 讀取 outputcli-[XX].json 的内容
+            content = f.read()
+            if "Done. Times: Loading:" in content and "Watching for changes (1000ms cycle)" in content:
+                # 將内容追加到 [bundle_id].json
+                with open(bundle_id_json, 'r+', encoding='utf-8') as f:
+                    try:
+                        existing_data = json.load(f)
+                    except json.JSONDecodeError:
+                        existing_data = {"validate_message": []}
 
-            if isinstance(existing_data, dict) and isinstance(existing_data.get("bundle_id"), list):
-                existing_data["bundle_id"].append(output_data)
-            else:
-                raise ValueError("Unexpected JSON structure")
+                    if isinstance(existing_data, dict) and isinstance(existing_data.get("validate_message"), list):
+                        existing_data["validate_message"].append(content)
+                    else:
+                        raise ValueError("Unexpected JSON structure")
 
-            f.seek(0)
-            json.dump(existing_data, f, ensure_ascii=False, indent=2)
-            f.truncate()
-            
-        print(f"Copied {output_file_path} to {bundle_id_json}")
-        print(f"{id}產生驗證文件，釋放input空間，調整狀態為idle")
-        update_file_status(file_path, 'idle')
-    # else:
-    #     update_file_status(file_path, 'busy')
+                    f.seek(0)
+                    json.dump(existing_data, f, ensure_ascii=False, indent=2)
+                    f.truncate()
+                    
+                print(f"Copied {outputcli_file} to {bundle_id_json}")
+                print(f"{id}產生驗證文件，釋放input空間，調整狀態為idle")
+                update_file_status(file_path, 'idle')
+            # else:
+            #     update_file_status(file_path, 'busy')
     
 def get_bundle_id(file_path):
     try:
@@ -199,8 +201,8 @@ def get_bundle_id(file_path):
 # 首先: 先檢查符合JSON格式且狀態為busy的input文件是否完成驗證
 # 若完成驗證: 檢查[bundle_id].json是否存在
 #   若不存在: 創建[bundle_id].json
-#   判斷檢查output-[XX].json是否存在且格式正確
-#       若滿足:  複製output-[XX].json到[bundle_id].json，複製完畢才將狀態調整為idle
+#   判斷檢查outputcli-[XX].json是否存在且格式正確
+#       若滿足:  複製outputcli-[XX].json到[bundle_id].json，複製完畢才將狀態調整為idle
 #       若不滿足: 維持狀態為busy       
 # 若還沒完成驗證: 維持狀態不變(可能根本沒有需要驗證的不一定是busy)
 def changeto_idle_file():
@@ -218,18 +220,18 @@ def changeto_idle_file():
                         bundle_id_json = f"output_bundleID/{id}.json"
                         if not os.path.exists(bundle_id_json):
                             initial_data = {
-                                "bundle_id": []
+                                "validate_message": []
                             }
                             with open(bundle_id_json, 'w', encoding='utf-8') as f:
                                 json.dump(initial_data, f, ensure_ascii=False, indent=2)
-                    # 檢查output-[XX].json是否存在且格式正確，把output-[XX].json添加到bundle_id_json中
+                    # 檢查outputcli-[XX].json是否存在且格式正確，把outputcli-[XX].json添加到bundle_id_json中
                     file_num = ""
                     match = re.search(r'input/bundle-(\d{2})\.json', file_path)
                     if match:
                         file_num = match.group(1)
-                    output_file_path = "output/output-" + file_num + ".json"
-                    # 檢查output-[XX].json是否存在且格式正確，若存在檢查是否驗證完畢，再複製output-[XX].json到[bundle_id].json，複製完畢才將狀態調整為idle
-                    check_bundle_id_json_existed(file_path, output_file_path, id)
+                    outputcli_file = f'output_cli/outputcli-{file_num}.txt'
+                    # 檢查outputcli-[XX].json是否存在且格式正確，若存在檢查是否驗證完畢，再複製outputcli-[XX].json到[bundle_id].json，複製完畢才將狀態調整為idle
+                    check_bundle_id_json_existed(file_path, outputcli_file, id)
 
 # 監控是否所有request_id對應的bundle_ids都驗證完了若驗證完提取關鍵字寫入到output_bundleID.json中並刪除output_requestID.json    
 def check_all_bundles_validated():
@@ -264,6 +266,83 @@ def check_all_bundles_validated():
         
     if results:
         # print("昆霖測試 results = " + str(results))
+        
+        for result in results:
+            # 初始化最終輸出
+            output = {"validation_output": []}
+            request_id = result['request_id']
+            bundle_ids = result['bundle_ids'] 
+            request_id_path = os.path.join("output_requestID/", f"{request_id}.json")
+            # 如果request_id.json不存在，才需要將所有request_id對應的bundle_ids複製過去
+            if not os.path.exists(request_id_path):
+                all_exists_flag = True 
+                for bundle_id in bundle_ids:
+                    # 取得前10碼作為 bundle_id
+                    bundle_id_prefix = bundle_id[:10]
+                    
+                    # 檢查檔案是否存在
+                    bundle_id_path = os.path.join("output_bundleID/", f"{bundle_id_prefix}.json")
+                    
+                    # 檢查所有request_id對應的bundle_ids都驗證完且產生完畢
+                    if os.path.exists(bundle_id_path):
+                        with open(bundle_id_path, 'r') as f:
+                            content = f.read()
+                            if "Done. Times: Loading:" not in content or "Watching for changes (1000ms cycle)" not in content:
+                                all_exists_flag = False # 沒有全部驗證完畢
+                            # else:
+                            #     print(f"File {bundle_id_prefix}.json exists for request_id: {request_id}")
+                    else:
+                        all_exists_flag = False # 沒有全部驗證完畢
+
+                # 若全部驗證完畢則把所有bundle_id.json提取關鍵字，存到request_id.json，並刪除對應的所有bundle_id.json
+                if all_exists_flag == True:
+                    for bundle_id in bundle_ids:
+                        # 取得前10碼作為 bundle_id
+                        bundle_id_prefix = bundle_id[:10]
+                        remaining_bundle_id = bundle_id[10:]
+                        
+                        # 檢查檔案是否存在
+                        bundle_id_path = os.path.join("output_bundleID/", f"{bundle_id_prefix}.json")
+                        # 提取bundle_ids的validation message
+                        if os.path.exists(bundle_id_path):
+                            with open(bundle_id_path, 'r') as f:
+                                content = f.read() 
+                                # 解析 JSON 內容
+                                content_dict = json.loads(content)
+                                validate_message = content_dict.get("validate_message", [""])[0]
+                                # 使用正則表達式來匹配 Done. Times 和 Watching for changes 之間的內容
+                                pattern = re.compile(r'Done\. Times:.*?Memory = \d+Mb\n\n(.*?)\nWatching for changes', re.DOTALL)
+                                match = pattern.search(validate_message)
+
+                                if match:
+                                    extracted_content = match.group(1)
+                                    # print("昆霖測試extracted_content = " + extracted_content)
+                                    output["validation_output"].append({
+                                        "bundle_id": remaining_bundle_id,
+                                        "validation_message": extracted_content
+                                    })
+                    # 將最終結果寫入 request_id.json 文件
+                    with open(request_id_path, 'w') as f:
+                        json.dump(output, f, indent=4, ensure_ascii=False)
+                        
+                    # 將 request_id_path 的內容寫入到 MongoDB 中
+                    with open(request_id_path, 'r') as f:
+                        validation_message_content = json.load(f)
+                        
+                        # 更新 MongoDB 中對應的記錄
+                        collection.update_one(
+                            {'request_id': request_id},
+                            {'$set': {'validation_message': validation_message_content}}
+                        )
+                    
+                    # 產生完request_id.json後刪除所有對應的bundle_id.json
+                    for bundle_id in bundle_ids:
+                        bundle_id_prefix = bundle_id[:10]
+                        bundle_id_path = os.path.join("output_bundleID/", f"{bundle_id_prefix}.json")
+                        if os.path.exists(bundle_id_path):
+                            # 刪除文件
+                            os.remove(bundle_id_path)
+                        
     client.close()
 
 
@@ -318,7 +397,7 @@ if __name__ == "__main__":
     # initialize()  
     
     # Add scheduled task
-    scheduler.add_job(id='ScheduledTask', func=monitor_files, trigger='interval', seconds=3)
+    scheduler.add_job(id='ScheduledTask', func=monitor_files, trigger='interval', seconds=1)
 
     # Run the Flask application
     api_port = 10000

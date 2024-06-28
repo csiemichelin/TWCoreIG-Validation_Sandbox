@@ -67,7 +67,7 @@ def create_validations(body):
         verification_queue.put((json.dumps(bundle), bundle_id, request_id))
         # print("昆霖測試bundle_id = " + str(bundle_id))
         # print_queue_contents(verification_queue)
-        bundle_ids.append(generate_id)
+        bundle_ids.append(bundle_id)
         
     records.append({
         'request_id': request_id,
@@ -85,4 +85,5 @@ def create_validations(body):
         "message": "Validations created successfully",
         "modified_bundles": bundles
     }
-    return jsonify(response), 201
+    # return jsonify(response), 201
+    return 201
