@@ -6,7 +6,8 @@ from flask import jsonify, request, make_response
 from threading import Lock
 from __main__ import verification_queue
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, timedelta
+import time
 # from queue import Queue
 
 # 創建一個隊列來儲存 待驗證的 JSON 表單和對應的新id
@@ -79,11 +80,35 @@ def create_validations(body):
     # 將資料插入到 requests 集合中
     collection.insert_many(records)
     
-    client.close()
+    # client.close()
     
-    response = {
-        "message": "Validations created successfully",
-        "modified_bundles": bundles
-    }
-    # return jsonify(response), 201
-    return 201
+    # 等待並輪詢直到 validation_messages 存在
+    max_wait_time = timedelta(seconds=60)  # 最大等待時間（秒）
+    poll_interval = 1  # 輪詢間隔（秒）
+    start_time = datetime.now()
+
+    while datetime.now() - start_time < max_wait_time:
+        inserted_record = collection.find_one({'request_id': request_id})
+        if 'validation_messages' in inserted_record:
+            break
+        time.sleep(poll_interval)
+
+    client.close()
+
+    if 'validation_messages' in inserted_record:
+        response = {
+            "message": "Validations completed successfully",
+            "request_details": {
+                "request_id": inserted_record['request_id'],
+                "bundle_ids": inserted_record['bundle_ids'],
+                "create_time": inserted_record['create_time'],
+                "validation_messages": inserted_record['validation_messages']
+            }
+        }
+        return jsonify(response), 200
+    else:
+        response = {
+            "message": "Validation results not available within the expected time",
+            "request_id": request_id
+        }
+        return jsonify(response), 202  # 202 Accepted
