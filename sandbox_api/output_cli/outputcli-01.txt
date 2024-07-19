@@ -1,8 +1,8 @@
   Validate /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/bundle-01.json
 Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient|4.0.1..........20..........40..........60..........80.........|
 Validate Patient against https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore..........20..........40..........60..........80.........|
- 00:00.062
-Done. Times: Loading: 01:23.919, validation: 00:13.647 (#68). Memory = 745Mb
+ 00:00.111
+Done. Times: Loading: 01:12.460, validation: 00:44.529 (#17). Memory = 617Mb
 
 Success: 0 errors, 0 warnings, 1 notes
   Information: All OK

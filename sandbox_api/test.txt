@@ -1,0 +1,34 @@
+FHIR Validation tool Version 6.3.5 (Git# ccf66ece0b80). Built 2024-04-16T22:48:28.193Z (93 days old)
+  Java:   17.0.11 from /usr/lib/jvm/java-17-openjdk-amd64 on amd64 (64bit). 2476MB available
+  Paths:  Current = /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api, Package Cache = /home/michelin/.fhir/packages
+  Params: input/bundle-01.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all
+  Locale: /
+  Jurisdiction: None specified (locale = )
+  Note that exceptions and validation failures may happen in the absense of a locale
+Loading
+  Load FHIR v4.0 from hl7.fhir.r4.core#4.0.1 - 4576 resources (00:05.907)
+  Load hl7.fhir.uv.extensions.r5#5.1.0 - 1396 resources (00:03.930)
+  Load hl7.terminology#6.0.0 - 4243 resources (00:02.358)
+  Load hl7.terminology.r5#5.5.0 - 4224 resources (00:01.345)
+  Load hl7.fhir.uv.extensions#5.1.0 - 1396 resources (00:01.147)
+  Terminology server http://tx.fhir.org - Version Connected to Terminology Server at http://tx.fhir.org (00:01.816)
+  Load hl7.terminology.r4#5.5.0 - 4224 resources (00:03.979)
+  Load hl7.fhir.uv.extensions.r4#5.1.0 - 1396 resources (00:02.321)
+  Load hl7.terminology.r4#5.0.0 - 4174 resources (00:02.373)
+  Load fhir.dicom#2022.4.20221006 - 1319 resources (00:00.043)
+  Load hl7.fhir.uv.ips#1.1.0 - 103 resources (00:00.522)
+  Load tw.gov.mohw.twcore#0.2.2 - 221 resources (00:00.798)
+  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.fhir.uv.extensions.r5#5.1.0, hl7.terminology#6.0.0, hl7.terminology.r5#5.5.0, hl7.fhir.uv.extensions#5.1.0, hl7.terminology.r4#5.5.0, hl7.fhir.uv.extensions.r4#5.1.0, hl7.terminology.r4#5.0.0, fhir.dicom#2022.4.20221006, hl7.fhir.uv.ips#1.1.0, tw.gov.mohw.twcore#0.2.2]
+  Get set...  go (00:00.756)
+Validating
+  Validate input/bundle-01.json
+Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient|4.0.1..........20..........40..........60..........80.........|
+Validate Patient against https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore..........20..........40..........60..........80.........|
+ 00:07.968
+Done. Times: Loading: 00:27.419, validation: 00:07.969. Memory = 756Mb
+
+*FAILURE*: 3 errors, 0 warnings, 0 notes
+  Error @ Patient.identifier[0].system (line 1, col6884): Value is 'http://www.moi.gov.tw/' but must be 'http://www.moi.gov.tw'
+  Error @ Patient.contact[0].name.use (line 1, col10442): The value provided ('test') was not found in the value set 'NameUse' (http://hl7.org/fhir/ValueSet/name-use|4.0.1), and a code is required from this value set  (error message = The System URI could not be determined for the code 'test' in the ValueSet 'http://hl7.org/fhir/ValueSet/name-use|4.0.1'; None of the provided codes ['#test'] are in the value set 'http://hl7.org/fhir/ValueSet/name-use|4.0.1')
+  Error @ Patient (line 1, col10826): Unrecognized property 'test1'
+Watching for changes (1000ms cycle)

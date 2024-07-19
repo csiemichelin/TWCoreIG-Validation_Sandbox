@@ -1,1 +1,6 @@
 validator_cli.jar
+
+/input
+/output_requestID
+/output_bundleID
+/output_cli

@@ -3,5 +3,5 @@
 
 將validator_cli.jar放到指定sandbox_api目錄位置  
 執行server: sudo python3 -m swagger_server  
-執行script寫入cli_message(判斷是否驗證完畢)     
+執行script寫入cli_message(判斷是否驗證完畢): sudo ./run.sh
 啟動MongoDB綁定IP: mongod --bind_ip localhost,52-0B20626-H1  

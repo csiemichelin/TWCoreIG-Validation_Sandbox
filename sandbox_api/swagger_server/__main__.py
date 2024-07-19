@@ -329,10 +329,13 @@ def check_all_bundles_validated():
                     with open(request_id_path, 'r') as f:
                         validation_message_content = json.load(f)
                         
+                        # 提取 validation_messages
+                        validation_output = validation_message_content["validation_output"]
+                        
                         # 更新 MongoDB 中對應的記錄
                         collection.update_one(
                             {'request_id': request_id},
-                            {'$set': {'validation_message': validation_message_content}}
+                            {'$set': {'validation_messages': validation_output}}
                         )
                     
                     # 產生完request_id.json後刪除所有對應的bundle_id.json
