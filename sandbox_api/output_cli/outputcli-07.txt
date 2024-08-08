@@ -1,31 +1,31 @@
-FHIR Validation tool Version 6.3.5 (Git# ccf66ece0b80). Built 2024-04-16T22:48:28.193Z (93 days old)
+FHIR Validation tool Version 6.3.5 (Git# ccf66ece0b80). Built 2024-04-16T22:48:28.193Z (97 days old)
   Java:   17.0.11 from /usr/lib/jvm/java-17-openjdk-amd64 on amd64 (64bit). 2476MB available
   Paths:  Current = /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/commands, Package Cache = /root/.fhir/packages
-  Params: /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/bundle-09.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all
+  Params: /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all
   Locale: /
   Jurisdiction: None specified (locale = )
   Note that exceptions and validation failures may happen in the absense of a locale
 Loading
-  Load FHIR v4.0 from hl7.fhir.r4.core#4.0.1 - 4576 resources (00:34.984)
-  Load hl7.fhir.uv.extensions.r5#5.1.0 - 1396 resources (00:46.229)
-  Load hl7.terminology#6.0.0 - 4243 resources (00:07.975)
-  Load hl7.terminology.r5#5.5.0 - 4224 resources (00:06.129)
-  Load hl7.fhir.uv.extensions#5.1.0 - 1396 resources (00:03.099)
-  Terminology server http://tx.fhir.org - Version Connected to Terminology Server at http://tx.fhir.org (00:02.328)
-  Load hl7.terminology.r4#5.5.0 - 4224 resources (00:10.784)
-  Load hl7.fhir.uv.extensions.r4#5.1.0 - 1396 resources (00:03.914)
-  Load hl7.terminology.r4#5.0.0 - 4174 resources (00:05.336)
-  Load fhir.dicom#2022.4.20221006 - 1319 resources (00:00.116)
-  Load hl7.fhir.uv.ips#1.1.0 - 103 resources (00:00.690)
-  Load tw.gov.mohw.twcore#0.2.2 - 221 resources (00:01.026)
-  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.fhir.uv.extensions.r5#5.1.0, hl7.terminology#6.0.0, hl7.terminology.r5#5.5.0, hl7.fhir.uv.extensions#5.1.0, hl7.terminology.r4#5.5.0, hl7.fhir.uv.extensions.r4#5.1.0, hl7.terminology.r4#5.0.0, fhir.dicom#2022.4.20221006, hl7.fhir.uv.ips#1.1.0, tw.gov.mohw.twcore#0.2.2]
-  Get set...  go (00:02.056)
+  Load FHIR v4.0 from hl7.fhir.r4.core#4.0.1 - 4576 resources (00:27.490)
+  Load hl7.fhir.uv.extensions.r5#5.1.0 - 1396 resources (00:29.981)
+  Load hl7.terminology#6.0.2 - 4243 resources (00:07.802)
+  Load hl7.terminology.r5#5.5.0 - 4224 resources (00:37.934)
+  Load hl7.fhir.uv.extensions#5.1.0 - 1396 resources (00:52.754)
+  Terminology server http://tx.fhir.org - Version Connected to Terminology Server at http://tx.fhir.org (00:10.575)
+  Load hl7.terminology.r4#5.5.0 - 4224 resources (00:29.443)
+  Load hl7.fhir.uv.extensions.r4#5.1.0 - 1396 resources (01:13.967)
+  Load hl7.terminology.r4#5.0.0 - 4174 resources (00:44.940)
+  Load fhir.dicom#2022.4.20221006 - 1319 resources (00:00.125)
+  Load hl7.fhir.uv.ips#1.1.0 - 103 resources (00:01.441)
+  Load tw.gov.mohw.twcore#0.2.2 - 221 resources (00:04.078)
+  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.fhir.uv.extensions.r5#5.1.0, hl7.terminology#6.0.2, hl7.terminology.r5#5.5.0, hl7.fhir.uv.extensions#5.1.0, hl7.terminology.r4#5.5.0, hl7.fhir.uv.extensions.r4#5.1.0, hl7.terminology.r4#5.0.0, fhir.dicom#2022.4.20221006, hl7.fhir.uv.ips#1.1.0, tw.gov.mohw.twcore#0.2.2]
+  Get set...  go (00:18.215)
 Validating
-  Validate /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/bundle-09.json
+  Validate /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/initial.json
 Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient|4.0.1..........20..........40..........60..........80.........|
 Validate Patient against https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore..........20..........40..........60..........80.........|
- 00:03.366
-Done. Times: Loading: 02:05.173, validation: 00:03.367. Memory = 917Mb
+ 00:08.856
+Done. Times: Loading: 05:39.381, validation: 00:08.860. Memory = 738Mb
 
 *FAILURE*: 1 errors, 0 warnings, 0 notes
   Error @ Patient.identifier[0].system (line 67, col47): Value is 'http://www.moi.gov.tw/' but must be 'http://www.moi.gov.tw'

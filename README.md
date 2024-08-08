@@ -7,10 +7,10 @@
 * 此專案資料庫採用MongoDB進行存取，每個document欄位包含: _id, request_id, bundle_ids, create_time, validation_message  
 
 將validator_cli.jar放到指定sandbox_api目錄位置  
+啟動MongoDB綁定IP: mongod --bind_ip localhost,52-0B20626-H1  
 執行server: sudo python3 -m swagger_server  
 <<<<<<< HEAD
 執行script寫入cli_message(判斷是否驗證完畢): sudo ./run.sh
-啟動MongoDB綁定IP: mongod --bind_ip localhost,52-0B20626-H1  
 =======
 執行script寫入cli_message(判斷是否驗證完畢)     
 啟動MongoDB綁定IP: mongod --bind_ip localhost,52-0B20626-H1  

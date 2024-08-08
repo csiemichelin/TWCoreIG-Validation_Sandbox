@@ -27,14 +27,16 @@ run_command() {
 
 # Array of commands and their corresponding output files
 commands=(
-    "$base_dir/validator_cli.jar $input_dir/bundle-01.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
-    "$base_dir/validator_cli.jar $input_dir/bundle-02.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
-    "$base_dir/validator_cli.jar $input_dir/bundle-03.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
-    "$base_dir/validator_cli.jar $input_dir/bundle-04.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
-    "$base_dir/validator_cli.jar $input_dir/bundle-07.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
-    "$base_dir/validator_cli.jar $input_dir/bundle-08.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
-    "$base_dir/validator_cli.jar $input_dir/bundle-09.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
-    "$base_dir/validator_cli.jar $input_dir/bundle-10.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
+    "$base_dir/validator_cli.jar $input_dir/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all"
 )
 
 # Array of corresponding output files

@@ -1,32 +1,32 @@
-FHIR Validation tool Version 6.3.5 (Git# ccf66ece0b80). Built 2024-04-16T22:48:28.193Z (93 days old)
+FHIR Validation tool Version 6.3.5 (Git# ccf66ece0b80). Built 2024-04-16T22:48:28.193Z (97 days old)
   Java:   17.0.11 from /usr/lib/jvm/java-17-openjdk-amd64 on amd64 (64bit). 2476MB available
   Paths:  Current = /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/commands, Package Cache = /root/.fhir/packages
-  Params: /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/bundle-03.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all
+  Params: /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/initial.json -version 4.0 -ig tw.gov.mohw.twcore -watch-mode all
   Locale: /
   Jurisdiction: None specified (locale = )
   Note that exceptions and validation failures may happen in the absense of a locale
 Loading
-  Load FHIR v4.0 from hl7.fhir.r4.core#4.0.1 - 4576 resources (00:09.510)
-  Load hl7.fhir.uv.extensions.r5#5.1.0 - 1396 resources (00:05.310)
-  Load hl7.terminology#6.0.0 - 4243 resources (00:04.597)
-  Load hl7.terminology.r5#5.5.0 - 4224 resources (00:03.435)
-  Load hl7.fhir.uv.extensions#5.1.0 - 1396 resources (00:03.187)
-  Terminology server http://tx.fhir.org - Version Connected to Terminology Server at http://tx.fhir.org (00:02.070)
-  Load hl7.terminology.r4#5.5.0 - 4224 resources (00:14.016)
-  Load hl7.fhir.uv.extensions.r4#5.1.0 - 1396 resources (00:06.461)
-  Load hl7.terminology.r4#5.0.0 - 4174 resources (00:20.368)
-  Load fhir.dicom#2022.4.20221006 - 1319 resources (00:06.174)
-  Load hl7.fhir.uv.ips#1.1.0 - 103 resources (00:06.496)
-  Load tw.gov.mohw.twcore#0.2.2 - 221 resources (00:12.651)
-  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.fhir.uv.extensions.r5#5.1.0, hl7.terminology#6.0.0, hl7.terminology.r5#5.5.0, hl7.fhir.uv.extensions#5.1.0, hl7.terminology.r4#5.5.0, hl7.fhir.uv.extensions.r4#5.1.0, hl7.terminology.r4#5.0.0, fhir.dicom#2022.4.20221006, hl7.fhir.uv.ips#1.1.0, tw.gov.mohw.twcore#0.2.2]
-  Get set...  go (00:37.090)
+  Load FHIR v4.0 from hl7.fhir.r4.core#4.0.1 - 4576 resources (00:10.554)
+  Load hl7.fhir.uv.extensions.r5#5.1.0 - 1396 resources (00:05.719)
+  Load hl7.terminology#6.0.2 - 4243 resources (00:07.726)
+  Load hl7.terminology.r5#5.5.0 - 4224 resources (00:06.156)
+  Load hl7.fhir.uv.extensions#5.1.0 - 1396 resources (00:04.255)
+  Terminology server http://tx.fhir.org - Version Connected to Terminology Server at http://tx.fhir.org (00:02.416)
+  Load hl7.terminology.r4#5.5.0 - 4224 resources (00:17.850)
+  Load hl7.fhir.uv.extensions.r4#5.1.0 - 1396 resources (00:09.230)
+  Load hl7.terminology.r4#5.0.0 - 4174 resources (00:18.353)
+  Load fhir.dicom#2022.4.20221006 - 1319 resources (00:08.683)
+  Load hl7.fhir.uv.ips#1.1.0 - 103 resources (00:48.922)
+  Load tw.gov.mohw.twcore#0.2.2 - 221 resources (00:08.552)
+  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.fhir.uv.extensions.r5#5.1.0, hl7.terminology#6.0.2, hl7.terminology.r5#5.5.0, hl7.fhir.uv.extensions#5.1.0, hl7.terminology.r4#5.5.0, hl7.fhir.uv.extensions.r4#5.1.0, hl7.terminology.r4#5.0.0, fhir.dicom#2022.4.20221006, hl7.fhir.uv.ips#1.1.0, tw.gov.mohw.twcore#0.2.2]
+  Get set...  go (01:02.810)
 Validating
-  Validate /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/bundle-03.json
+  Validate /home/michelin/TWCoreIG-Validation_Sandbox/sandbox_api/input/initial.json
 Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient|4.0.1..........20..........40..........60..........80.........|
 Validate Patient against https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore..........20..........40..........60..........80.........|
- 00:10.473
-Done. Times: Loading: 02:11.656, validation: 00:10.476. Memory = 734Mb
+ 02:08.881
+Done. Times: Loading: 03:31.833, validation: 02:08.887. Memory = 601Mb
 
-Success: 0 errors, 0 warnings, 1 notes
-  Information: All OK
+*FAILURE*: 1 errors, 0 warnings, 0 notes
+  Error @ Patient.identifier[0].system (line 67, col47): Value is 'http://www.moi.gov.tw/' but must be 'http://www.moi.gov.tw'
 Watching for changes (1000ms cycle)
